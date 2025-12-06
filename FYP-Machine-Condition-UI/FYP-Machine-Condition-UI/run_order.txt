@@ -1,0 +1,5 @@
+cd FYP-Machine-Condition-UI/FYP-Machine-Condition-UI
+
+npm i
+
+npm run dev
