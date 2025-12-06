@@ -1,0 +1,7 @@
+cd FYP-Machine-Data-Generator
+
+_fyp_datagen/Scripts/activate
+
+python sensor_simulator.py
+
+python verify_influx_fields.py
