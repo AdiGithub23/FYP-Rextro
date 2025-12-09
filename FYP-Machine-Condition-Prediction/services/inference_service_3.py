@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import pickle
+from matplotlib.style import context
 import numpy as np
 import torch
 from scipy.signal import butter, filtfilt
@@ -311,7 +312,7 @@ class InferenceService:
         
         return cleaned
     
-    def _scale_predictions_to_context(self, predictions, context, method='minmax'):
+    def _scale_predictions_to_context(self, predictions, context, method='robust'):
         """
         Scale predictions to match the statistical properties of the input context.
         
@@ -325,10 +326,17 @@ class InferenceService:
         """
         scaled = np.zeros_like(predictions)
         num_features = predictions.shape[1]
+    
+        # Use only last 15% of context
+        last_x_percent = int(context.shape[0] * 0.15)
+        recent_context = context[-last_x_percent:, :]
+
+        print(f"       Using last {last_x_percent} points ({last_x_percent}/{context.shape[0]}) for scaling range")
+    
         
         for i in range(num_features):
             pred_col = predictions[:, i]
-            ctx_col = context[:, i]
+            ctx_col = recent_context[:, i]
             
             if method == 'minmax':
                 # Min-max scaling to context range
