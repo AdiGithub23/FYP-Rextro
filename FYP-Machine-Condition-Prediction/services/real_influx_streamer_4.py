@@ -348,7 +348,6 @@ class ScheduledInfluxInference:
         """
         # Query range - use a large range to ensure we get enough data
         # Data is collected every 10 seconds, so 240 points = 40 minutes
-        # Use 2 hours (120 minutes) to be safe
         range_minutes = max(120, (n * 15) // 60)  # Extra margin for 10-second intervals
         
         query = f'''
@@ -400,7 +399,7 @@ class ScheduledInfluxInference:
             if len(data_points) == 0:
                 print(f"⚠️ [Inference] No data found in last {range_minutes} minutes")
                 print(f"   Check if data is being written to InfluxDB")
-                print(f"   Measurement: 'machine_metrics'")
+                print(f"   Measurement: 'sensor_data/ machine_metrics'")
                 print(f"   Machine ID: '{self.workspace_id}'")
             
             return data_points if len(data_points) > 0 else None
