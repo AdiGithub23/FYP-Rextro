@@ -14,22 +14,22 @@ const AnomalyScorePanel = ({ alerts }) => {
     const features = Object.keys(anomalyScores);
     
     const getScoreColor = (percentage) => {
-        if (percentage >= 30) return '#dc3545'; // Red - At Risk
-        if (percentage >= 15) return '#ffc107'; // Yellow - Warning
-        return '#28a745'; // Green - Normal
+        if (percentage >= 30) return '#ff3b30'; // Red - At Risk
+        if (percentage >= 15) return '#ff9500'; // Orange - Warning
+        return '#00ff88'; // Green - Normal
     };
 
     const getScoreBackground = (percentage) => {
-        if (percentage >= 30) return 'rgba(220, 53, 69, 0.1)';
-        if (percentage >= 15) return 'rgba(255, 193, 7, 0.1)';
-        return 'rgba(40, 167, 69, 0.1)';
+        if (percentage >= 30) return 'rgba(255, 59, 48, 0.15)';
+        if (percentage >= 15) return 'rgba(255, 149, 0, 0.15)';
+        return 'rgba(0, 255, 136, 0.15)';
     };
 
     if (!features.length) {
         return (
-            <div className="panel">
-                <h3>📊 Anomaly Scores</h3>
-                <p style={{ color: '#666', fontStyle: 'italic' }}>
+            <div className="panel" style={{ background: '#1e293b' }}>
+                <h3 style={{ fontSize: '18px', color: '#ffffff' }}>📊 Anomaly Scores</h3>
+                <p style={{ color: '#e2e8f0', fontStyle: 'italic', fontSize: '14px' }}>
                     Waiting for first inference cycle...
                 </p>
             </div>
@@ -37,9 +37,9 @@ const AnomalyScorePanel = ({ alerts }) => {
     }
 
     return (
-        <div className="panel">
-            <h3 style={{ marginBottom: '15px' }}>Anomaly Scores by Feature</h3>
-            <p style={{ fontSize: '12px', color: '#666', marginBottom: '15px' }}>
+        <div className="panel" style={{ background: '#1e293b' }}>
+            <h3 style={{ marginBottom: '15px', fontSize: '18px', color: '#ffffff', fontWeight: 'bold' }}>Anomaly Scores by Feature</h3>
+            <p style={{ fontSize: '13px', color: '#e2e8f0', marginBottom: '15px', fontWeight: '500' }}>
                 Threshold: 30% (values above trigger alert)
             </p>
             
@@ -66,25 +66,26 @@ const AnomalyScorePanel = ({ alerts }) => {
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div>
-                                    <strong style={{ fontSize: '14px' }}>
+                                    <strong style={{ fontSize: '15px', color: '#f8fafc' }}>
                                         {FEATURE_DISPLAY_NAMES[feature] || feature}
                                     </strong>
                                     {isAtRisk && (
                                         <span style={{ 
                                             marginLeft: '8px', 
-                                            padding: '2px 6px', 
-                                            background: '#dc3545', 
+                                            padding: '3px 8px', 
+                                            background: '#ff3b30', 
                                             color: 'white', 
                                             borderRadius: '4px',
-                                            fontSize: '10px',
-                                            fontWeight: 'bold'
+                                            fontSize: '11px',
+                                            fontWeight: 'bold',
+                                            boxShadow: '0 0 8px rgba(255, 59, 48, 0.5)'
                                         }}>
                                             AT RISK
                                         </span>
                                     )}
                                 </div>
                                 <span style={{ 
-                                    fontSize: '18px', 
+                                    fontSize: '20px', 
                                     fontWeight: 'bold',
                                     color: getScoreColor(percentage)
                                 }}>
@@ -96,7 +97,8 @@ const AnomalyScorePanel = ({ alerts }) => {
                             <div style={{ 
                                 marginTop: '8px', 
                                 height: '8px', 
-                                background: '#e9ecef', 
+                                background: '#0f1419', 
+                                border: '1px solid #2d3748',
                                 borderRadius: '4px',
                                 overflow: 'hidden'
                             }}>
@@ -104,6 +106,7 @@ const AnomalyScorePanel = ({ alerts }) => {
                                     width: `${Math.min(percentage, 100)}%`,
                                     height: '100%',
                                     background: getScoreColor(percentage),
+                                    boxShadow: `0 0 8px ${getScoreColor(percentage)}`,
                                     transition: 'width 0.3s ease'
                                 }} />
                             </div>

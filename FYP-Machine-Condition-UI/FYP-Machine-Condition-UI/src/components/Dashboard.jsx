@@ -52,15 +52,15 @@ const Dashboard = () => {
     return (
         <div className="dashboard-container">
             {/* Header */}
-            <header className="dashboard-header">
-                <h1>Machine Condition Monitoring Dashboard</h1>
-                <p style={{ color: '#666', marginTop: '5px' }}>
+            <header className="dashboard-header" style={{ background: '#1e293b', borderRadius: '12px', padding: '20px', textAlign: 'center', marginBottom: '20px' }}>
+                <h1 style={{ color: '#ffffff' }}>Machine Condition Monitoring Dashboard</h1>
+                <p style={{ color: '#f8fafc', marginTop: '5px', opacity: 0.9 }}>
                     Real-time PatchTST Inference • Lookback: 240 points • Forecast: 60 points
                 </p>
             </header>
 
             {/* Main Alert Banner */}
-            <div className={`alert-banner alert-${alertDisplay.status}`}>
+            <div className={`alert-banner alert-${alertDisplay.status}`} style={{ background: '#1e293b', border: '2px solid #334155', padding: '15px 20px', borderRadius: '10px', marginBottom: '20px' }}>
                 <span className="alert-icon">{alertDisplay.icon}</span>
                 <div className="alert-content">
                     <span className="alert-message">{alertDisplay.message}</span>
@@ -97,8 +97,8 @@ const Dashboard = () => {
             </div>
 
             {/* Charts Grid - All 6 Features */}
-            <div className="charts-section">
-                <h2 style={{ marginBottom: '15px', color: '#333' }}>
+            <div className="charts-section" style={{ background: '#1e293b', padding: '20px', borderRadius: '12px', marginBottom: '20px' }}>
+                <h2 style={{ marginBottom: '15px', color: '#ffffff', fontWeight: 'bold' }}>
                     Sensor Data & Forecasts
                 </h2>
                 <div className="charts-grid">
@@ -111,8 +111,8 @@ const Dashboard = () => {
             </div>
 
             {/* Footer */}
-            <footer className="dashboard-footer">
-                <p>
+            <footer className="dashboard-footer" style={{ background: '#1e293b', padding: '15px', borderRadius: '10px', textAlign: 'center' }}>
+                <p style={{ color: '#e2e8f0' }}>
                     Last updated: {metadata?.timestamp ? new Date(metadata.timestamp).toLocaleString() : 'N/A'}
                     {' | '}
                     Total Inferences: {metadata?.inference_count || 0}
