@@ -16,3 +16,4 @@ cd FYP-Machine-Condition-Prediction
 _fyp_wf_1\Scripts\activate
 uvicorn app:app --reload
 ---
+

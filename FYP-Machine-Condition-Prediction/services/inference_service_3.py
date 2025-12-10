@@ -405,10 +405,10 @@ class InferenceService:
         
         Thresholds:
         - tempA/tempB: > 45°C
-        - current: > 11A
-        - accX: < -1.9 or > 0.7
-        - accY: < -2.0 or > 0.7
-        - accZ: < 5.5 or > 14.5
+        - current: > 3.5A
+        - accX: < -4.0 or > 0.7
+        - accY: < -4.0 or > 0.7
+        - accZ: < 8.5 or > 12.5
         
         Machine is at risk if ANY feature exceeds threshold in ≥30% of predictions (18/60 points).
         
@@ -425,12 +425,12 @@ class InferenceService:
         """
         # Define thresholds for each feature
         thresholds = {
-            'current': {'max': 11.0},
+            'current': {'max': 3.5},
             'tempA': {'max': 45.0},
             'tempB': {'max': 45.0},
-            'accX': {'min': -1.9, 'max': 0.7},
-            'accY': {'min': -2.0, 'max': 0.7},
-            'accZ': {'min': 5.5, 'max': 14.5}
+            'accX': {'min': -4.0, 'max': 0.7},
+            'accY': {'min': -4.0, 'max': 0.7},
+            'accZ': {'min': 8.5, 'max': 12.5}
         }
         
         num_predictions = predictions_raw.shape[0]  # 60
