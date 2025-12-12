@@ -48,6 +48,7 @@ class ScheduledInfluxInference:
         self.last_lookback = []
         self.last_raw_forecast = None
         self.last_scaled_forecast = None
+        self.previous_scaled_forecast = None  # Store previous inference forecast for comparison
         self.next_inference_time = None
         self.inference_count = 0
         
@@ -252,6 +253,10 @@ class ScheduledInfluxInference:
                 results, alerts = self.inference_service.run_inference(last_240_points)
                 
                 if results is not None:
+                    # Save current forecast as "previous" before updating
+                    if self.last_scaled_forecast is not None:
+                        self.previous_scaled_forecast = self.last_scaled_forecast.copy()
+                    
                     # Store results
                     self.last_prediction = results
                     self.last_alerts = alerts
@@ -458,6 +463,17 @@ class ScheduledInfluxInference:
             list: Last lookback data (240 points)
         """
         return self.last_lookback
+    
+    def get_previous_forecast(self):
+        """
+        Return the forecast from the previous inference run.
+        This can be compared with the last 60 points of current lookback
+        to visualize prediction accuracy.
+        
+        Returns:
+            numpy.ndarray or None: Previous forecast (60 points x 6 features)
+        """
+        return self.previous_scaled_forecast
     
     def get_buffer(self):
         """

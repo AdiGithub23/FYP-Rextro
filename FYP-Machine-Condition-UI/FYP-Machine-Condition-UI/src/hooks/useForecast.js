@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchForecastData, fetchLastLookback } from '../services/api';
+import { fetchForecastData, fetchLastLookback, fetchPreviousForecast } from '../services/api';
 
 const useForecast = () => {
     const [lookbackData, setLookbackData] = useState([]);
     const [forecastData, setForecastData] = useState([]);
+    const [previousForecastData, setPreviousForecastData] = useState([]);
     const [alerts, setAlerts] = useState({});
     const [metadata, setMetadata] = useState({});
     const [loading, setLoading] = useState(true);
@@ -11,17 +12,20 @@ const useForecast = () => {
 
     const fetchData = useCallback(async () => {
         try {
-            // Fetch both lookback and forecast data
-            const [lookback, forecast] = await Promise.all([
+            // Fetch lookback, forecast, and previous forecast data
+            const [lookback, forecast, previousForecast] = await Promise.all([
                 fetchLastLookback(),
-                fetchForecastData()
+                fetchForecastData(),
+                fetchPreviousForecast()
             ]);
             
             console.log('useForecast - Lookback data:', lookback);
             console.log('useForecast - Forecast data:', forecast);
+            console.log('useForecast - Previous forecast data:', previousForecast);
             
             setLookbackData(lookback);
             setForecastData(forecast.scaledForecast);
+            setPreviousForecastData(previousForecast);
             setAlerts(forecast.alerts);
             setMetadata(forecast.metadata);
             setLoading(false);
@@ -41,7 +45,16 @@ const useForecast = () => {
         return () => clearInterval(intervalId);
     }, [fetchData]);
 
-    return { lookbackData, forecastData, alerts, metadata, loading, error, refetch: fetchData };
+    return { 
+        lookbackData, 
+        forecastData, 
+        previousForecastData, 
+        alerts, 
+        metadata, 
+        loading, 
+        error, 
+        refetch: fetchData 
+    };
 };
 
 export default useForecast;
