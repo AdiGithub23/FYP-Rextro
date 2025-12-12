@@ -86,3 +86,19 @@ export const fetchInferenceStatus = async () => {
         throw error;
     }
 };
+
+// Fetch previous forecast (from last inference run)
+export const fetchPreviousForecast = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/inference/previous-forecast`);
+        const result = response.data;
+        
+        if (result.status === 'success' && result.has_previous_forecast) {
+            return result.previous_forecast || [];
+        }
+        return [];
+    } catch (error) {
+        console.error("Error fetching previous forecast:", error);
+        return [];
+    }
+};

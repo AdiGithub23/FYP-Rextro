@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import UnifiedSensorChart from './UnifiedSensorChart';
 import AnomalyScorePanel from './AnomalyScorePanel';
 import InferenceStatus from './InferenceStatus';
@@ -8,6 +9,7 @@ import '../styles/index.css';
 
 const Dashboard = () => {
     const { alerts, metadata, loading } = useForecast();
+    const navigate = useNavigate();
 
     // Generate alert message based on status
     const getAlertDisplay = () => {
@@ -98,9 +100,32 @@ const Dashboard = () => {
 
             {/* Charts Grid - All 6 Features */}
             <div className="charts-section" style={{ background: '#1e293b', padding: '20px', borderRadius: '12px', marginBottom: '20px' }}>
-                <h2 style={{ marginBottom: '15px', color: '#ffffff', fontWeight: 'bold' }}>
-                    Sensor Data & Forecasts
-                </h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                    <h2 style={{ margin: 0, color: '#ffffff', fontWeight: 'bold' }}>
+                        Sensor Data & Forecasts
+                    </h2>
+                    <button 
+                        onClick={() => navigate('/comparison')}
+                        style={{
+                            background: '#3b82f6',
+                            color: '#ffffff',
+                            border: 'none',
+                            padding: '10px 20px',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'background 0.2s'
+                        }}
+                        onMouseEnter={(e) => e.target.style.background = '#2563eb'}
+                        onMouseLeave={(e) => e.target.style.background = '#3b82f6'}
+                    >
+                        📊 Comparison
+                    </button>
+                </div>
                 <div className="charts-grid">
                     {FEATURE_NAMES.map(feature => (
                         <div key={feature} className="chart-card">

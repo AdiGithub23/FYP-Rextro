@@ -211,6 +211,49 @@ def get_last_lookback():
         "data": data
     }
 
+@app.get("/inference/previous-forecast")
+def get_previous_forecast():
+    """
+    Retrieve the forecast from the previous inference run.
+    This can be overlaid with the last 60 lookback points to show prediction accuracy.
+    
+    Returns:
+        - previous_forecast: 60 points x 6 features array from previous inference
+        - null if no previous forecast exists yet
+    """
+    previous_forecast = streamer.get_previous_forecast()
+    
+    if previous_forecast is None:
+        return {
+            "status": "success",
+            "has_previous_forecast": False,
+            "message": "No previous forecast available yet (need at least 2 inference runs)",
+            "previous_forecast": None
+        }
+    
+    # Convert numpy array to list of dicts for JSON serialization
+    forecast_list = []
+    feature_names = ["current", "tempA", "tempB", "accX", "accY", "accZ"]
+    
+    for i in range(len(previous_forecast)):
+        point = {
+            "index": i,
+            "current": float(previous_forecast[i][0]),
+            "tempA": float(previous_forecast[i][1]),
+            "tempB": float(previous_forecast[i][2]),
+            "accX": float(previous_forecast[i][3]),
+            "accY": float(previous_forecast[i][4]),
+            "accZ": float(previous_forecast[i][5])
+        }
+        forecast_list.append(point)
+    
+    return {
+        "status": "success",
+        "has_previous_forecast": True,
+        "points_predicted": len(forecast_list),
+        "previous_forecast": forecast_list
+    }
+
 
 
 

@@ -28,11 +28,12 @@ ChartJS.register(
 );
 
 const UnifiedSensorChart = ({ selectedFeature = 'current' }) => {
-    const { lookbackData, forecastData, loading, error } = useForecast();
+    const { lookbackData, forecastData, previousForecastData, loading, error } = useForecast();
 
     // Debug logs
     console.log('UnifiedSensorChart - Lookback Data:', lookbackData);
     console.log('UnifiedSensorChart - Forecast Data:', forecastData);
+    console.log('UnifiedSensorChart - Previous Forecast Data:', previousForecastData);
 
     // Prepare chart data
     const chartData = useMemo(() => {
@@ -66,18 +67,18 @@ const UnifiedSensorChart = ({ selectedFeature = 'current' }) => {
             }
         ];
 
-        // Add forecast dataset if available
+        // Add current forecast dataset if available
         if (forecastPoints.length > 0) {
             datasets.push({
-                label: `Forecast - ${FEATURE_DISPLAY_NAMES[selectedFeature] || selectedFeature}`,
+                label: `Current Forecast - ${FEATURE_DISPLAY_NAMES[selectedFeature] || selectedFeature}`,
                 data: forecastPoints,
                 borderColor: FORECAST_COLORS[selectedFeature]?.line || 'rgba(255, 99, 132, 1)',
                 backgroundColor: FORECAST_COLORS[selectedFeature]?.fill || 'rgba(255, 99, 132, 0.15)',
-                borderWidth: 0.5,  // Thin dashed line (matching notebook: linewidth=2.5, scaled down for web)
-                borderDash: [],  // Smaller dash pattern for cleaner look
+                borderWidth: 1.0,  // Thin solid line matching lookback
+                borderDash: [],  // Solid line (no dashes)
                 pointRadius: 0,
                 pointHoverRadius: 5,
-                fill: false,  // No fill for cleaner visualization
+                fill: false,
                 tension: 0.1,
             });
         }
